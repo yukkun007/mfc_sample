@@ -10,7 +10,7 @@ class SampleWindow : public CMDIChildWnd {
  private:
     SampleWindow();
 
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);  // NOLINT (MFC method)
 
     // WM_CREATEのメッセージハンドラ
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
