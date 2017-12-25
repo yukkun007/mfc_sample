@@ -5,6 +5,11 @@
 // document template objectにこのクラスを知らせる
 IMPLEMENT_DYNCREATE(SampleView, CView)
 
+BEGIN_MESSAGE_MAP(SampleView, CView)
+    ON_WM_CREATE()
+    ON_EN_CHANGE(IDC_EDIT1, &SampleView::OnChangeEditControl)
+END_MESSAGE_MAP()
+
 SampleView::SampleView() {
     // (5)
 }
@@ -15,6 +20,29 @@ SampleDoc* SampleView::GetDocument() {
     return (SampleDoc*)CView::m_pDocument;
 }
 
+BOOL SampleView::PreCreateWindow(CREATESTRUCT& cs) {
+    // (6)
+
+    if (CView::PreCreateWindow(cs) == FALSE) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+int SampleView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
+    // (7)
+
+    if (CView::OnCreate(lpCreateStruct) == -1) {
+        return -1;
+    }
+
+    edit_control_.Create(
+        ES_NUMBER | ES_RIGHT | WS_CHILD | WS_VISIBLE | WS_BORDER,
+        CRect(10, 10, 110, 36), this, IDC_EDIT1);
+
+    return 0;
+}
 void SampleView::OnInitialUpdate() {
     // (9)
 
@@ -44,36 +72,6 @@ void SampleView::OnDraw(CDC* pDC) {
     int value = document->data_;
     CBrush brush(RGB(0, 0, 255));
     pDC->FillRect(CRect(10, 50, 10 + value, 80), &brush);
-}
-
-BOOL SampleView::PreCreateWindow(CREATESTRUCT& cs) {
-    // (6)
-
-    if (CView::PreCreateWindow(cs) == FALSE) {
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-
-BEGIN_MESSAGE_MAP(SampleView, CView)
-    ON_WM_CREATE()
-    ON_EN_CHANGE(IDC_EDIT1, &SampleView::OnChangeEditControl)
-END_MESSAGE_MAP()
-
-int SampleView::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-    // (7)
-
-    if (CView::OnCreate(lpCreateStruct) == -1) {
-        return -1;
-    }
-
-    edit_control_.Create(
-        ES_NUMBER | ES_RIGHT | WS_CHILD | WS_VISIBLE | WS_BORDER,
-        CRect(10, 10, 110, 36), this, IDC_EDIT1);
-
-    return 0;
 }
 
 void SampleView::OnChangeEditControl() {
